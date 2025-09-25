@@ -12,6 +12,8 @@ jobs:
     lint:
         runs-on: ubuntu-24.04
         steps:
+            - uses: actions/checkout@v4
+
             - name: Setup environment
               uses: ./.github/actions/setup
 
@@ -33,6 +35,8 @@ jobs:
     tests:
         runs-on: ubuntu-24.04
         steps:
+            - uses: actions/checkout@v4
+
             - name: Setup environment
               uses: ./.github/actions/setup
 
