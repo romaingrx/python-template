@@ -2,7 +2,7 @@ on: [workflow_dispatch, push]
 
 permissions:
   contents: write
-  actions: write
+  workflows: write
 
 jobs:
   initialize:
