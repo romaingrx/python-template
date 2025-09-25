@@ -1,11 +1,12 @@
-on:
-  push:
-    branches:
-      - master
+on: [workflow_dispatch, push]
+
+permissions:
+  contents: write
 
 jobs:
-  lint:
+  initialize:
     runs-on: ubuntu-24.04
+    if: ${{ github.repository != 'romaingrx/python-template' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,3 +33,12 @@ jobs:
 
           # Move the actual project to the new name
           mv __REPO_NAME__ ${python_project_name}
+          rm .github/workflows/initialize-template.yaml
+
+      - name: "Commit changes"
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "chore: initialize project from template"
+          git push
