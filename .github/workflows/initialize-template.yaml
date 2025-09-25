@@ -29,10 +29,13 @@ jobs:
             sed -i "s/__REPO_NAME__/${project_name}/g" "$file"
             sed -i "s/__REPO_DESCRIPTION__/${project_description}/g" "$file"
             sed -i "s/__PYTHON_PROJECT_NAME__/${python_project_name}/g" "$file"
+            sed -i "/TEMPLATE_REMOVE_ME/d" "$file" # Remove the templating lines
           done
 
           # Move the actual project to the new name
           mv __REPO_NAME__ ${python_project_name}
+
+          # Remove the template workflow file
           rm .github/workflows/initialize-template.yaml
 
       - name: "Commit changes"

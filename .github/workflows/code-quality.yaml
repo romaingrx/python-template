@@ -1,44 +1,42 @@
 name: Code quality checks
 
 on:
-    push:
-        branches:
-            - master
-    pull_request:
-        branches:
-            - master
+  push:
+  pull_request:
 
 jobs:
-    lint:
-        runs-on: ubuntu-24.04
-        steps:
-            - uses: actions/checkout@v4
+  lint:
+    runs-on: ubuntu-24.04
+    if: ${{ github.repository != 'romaingrx/python-template' }} # [TEMPLATE_REMOVE_ME]
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Setup environment
-              uses: ./.github/actions/setup
+      - name: Setup environment
+        uses: ./.github/actions/setup
 
-            - name: Run linting with Ruff
-              run: uv run ruff check --output-format=github
+      - name: Run linting with Ruff
+        run: uv run ruff check --output-format=github
 
-            - name: Run code formatting with Ruff
-              if: ${{ !cancelled() }}
-              run: uv run ruff format --check
+      - name: Run code formatting with Ruff
+        if: ${{ !cancelled() }}
+        run: uv run ruff format --check
 
-            - name: Run pre-commit hooks
-              # Skip ruff-check and ruff-format to avoid double checking
-              run: SKIP=ruff-check,ruff-format uv run pre-commit run --all-files
+      - name: Run pre-commit hooks
+        # Skip ruff-check and ruff-format to avoid double checking
+        run: SKIP=ruff-check,ruff-format uv run pre-commit run --all-files
 
-            - name: Run type checking
-              if: ${{ !cancelled() }}
-              run: uv run basedpyright
+      - name: Run type checking
+        if: ${{ !cancelled() }}
+        run: uv run basedpyright
 
-    tests:
-        runs-on: ubuntu-24.04
-        steps:
-            - uses: actions/checkout@v4
+  tests:
+    runs-on: ubuntu-24.04
+    if: ${{ github.repository != 'romaingrx/python-template' }} # [TEMPLATE_REMOVE_ME]
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Setup environment
-              uses: ./.github/actions/setup
+      - name: Setup environment
+        uses: ./.github/actions/setup
 
-            - name: Run tests
-              run: uv run pytest
+      - name: Run tests
+        run: uv run pytest
