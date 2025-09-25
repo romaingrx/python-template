@@ -23,9 +23,12 @@ jobs:
           project_description: ${{ steps.variables.outputs.project_description }}
           python_project_name: ${{ steps.variables.outputs.python_project_name }}
         run: |
-          find . -type f ! -path '*/\.*' ! -name '.gitignore' -exec sed -i "s/__REPO_NAME__/${project_name}/g" {} +
-          find . -type f ! -path '*/\.*' ! -name '.gitignore' -exec sed -i "s/__REPO_DESCRIPTION__/${project_description}/g" {} +
-          find . -type f ! -path '*/\.*' ! -name '.gitignore' -exec sed -i "s/__PYTHON_PROJECT_NAME__/${python_project_name}/g" {} +
+          files=$(git ls-files)
+          for file in $files; do
+            sed -i "s/__REPO_NAME__/${project_name}/g" "$file"
+            sed -i "s/__REPO_DESCRIPTION__/${project_description}/g" "$file"
+            sed -i "s/__PYTHON_PROJECT_NAME__/${python_project_name}/g" "$file"
+          done
 
           # Move the actual project to the new name
           mv __REPO_NAME__ ${python_project_name}
