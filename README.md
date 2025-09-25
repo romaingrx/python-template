@@ -1,6 +1,6 @@
-# REPO_NAME
+# __REPO_NAME__
 
-REPO_DESCRIPTION
+> __REPO_DESCRIPTION__
 
 ## License
 

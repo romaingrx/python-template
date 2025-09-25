@@ -1,7 +1,7 @@
 [project]
-name = "REPO_NAME"
+name = "__PYTHON_PROJECT_NAME__"
 version = "0.1.0"
-description = "REPO_DESCRIPTION"
+description = "__REPO_DESCRIPTION__"
 readme = "README.md"
 authors = [{ name = "Romain Graux", email = "author@romaingrx.com" }]
 requires-python = ">=3.13"

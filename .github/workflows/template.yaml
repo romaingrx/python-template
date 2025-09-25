@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Get all variables"
+        id: variables
+        # Normalization taken from https://github.com/pypa/packaging/blob/3b20e0fd026f90c0f7094e083d09a70bef86d051/src/packaging/utils.py#L46
+        run: |
+          echo "project_name=${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+          echo "project_description=${{ github.event.repository.description }}" >> $GITHUB_OUTPUT
+          echo "python_project_name=$(echo ${{ github.event.repository.name }} | sed 's/[^a-zA-Z_]//g' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
+      - name: "Replace template variables"
+        env:
+          project_name: ${{ steps.variables.outputs.project_name }}
+          project_description: ${{ steps.variables.outputs.project_description }}
+          python_project_name: ${{ steps.variables.outputs.python_project_name }}
+        run: |
+          find . -type f ! -path '*/\.*' ! -name '.gitignore' -exec sed -i "s/__REPO_NAME__/${project_name}/g" {} +
+          find . -type f ! -path '*/\.*' ! -name '.gitignore' -exec sed -i "s/__REPO_DESCRIPTION__/${project_description}/g" {} +
+          find . -type f ! -path '*/\.*' ! -name '.gitignore' -exec sed -i "s/__PYTHON_PROJECT_NAME__/${python_project_name}/g" {} +
+
+          # Move the actual project to the new name
+          mv __REPO_NAME__ ${python_project_name}

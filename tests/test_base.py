@@ -3,6 +3,6 @@ def test_base():
 
 
 def test_import_module():
-    import REPO_NAME
+    import __REPO_NAME__
 
-    assert REPO_NAME.WHO_AM_I == 42
+    assert __REPO_NAME__.WHO_AM_I == 42
