@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-24.04
     if: ${{ github.repository != 'romaingrx/python-template' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: "Get all variables"
         id: variables
